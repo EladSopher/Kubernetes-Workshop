@@ -7,11 +7,11 @@ prometheus-node-exporter:
   containerPort: 9155
   resources:
     requests:
-      cpu: "50m"
-      memory: "64Mi"
+      cpu: "200m"
+      memory: "512Mi"
     limits:
-      cpu: "100m"
-      memory: "128Mi"
+      cpu: "500m"
+      memory: "1Gi"
 
 prometheus:
   prometheusSpec:
@@ -28,12 +28,6 @@ prometheus:
 
 grafana:
   service:
-    type: ClusterIP
-    port: 3055  # Shifted from 3000
-  resources:
-    requests:
-      cpu: "50m"
-      memory: "128Mi"
-    limits:
-      cpu: "100m"
-      memory: "256Mi"
+    root_url:
+      afd291ea56b0e40d9aba85bc4ac72707-1219273054.us-east-1.elb.amazonaws.com/grafana
+    serve_from_sub_path: true
