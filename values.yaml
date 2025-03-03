@@ -1,0 +1,14 @@
+controller:
+  rbac:
+    create: true
+    scope: true
+  scope:
+    enabled: true
+    namespace: eladsopher  # Changed to your namespace
+  service:
+    type: LoadBalancer
+  ingressClassResource:
+    name: eladsopher
+    enabled: true
+    default: false  # Don’t set as cluster default to avoid conflicts
+    controllerValue: "k8s.io/ingress-nginx"

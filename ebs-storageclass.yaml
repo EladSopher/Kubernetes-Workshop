@@ -1,0 +1,12 @@
+# ebs-storageclass.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc-eladsopher
+  namespace: eladsopher
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer  # Delays binding until a pod uses the PVC
+parameters:
+  type: gp3  # General Purpose SSD (gp3 is cost-effective and performant)
+  fsType: ext4  # Filesystem type
+  encrypted: "true"  # Enable encryption for security

@@ -6,6 +6,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: ebs-sc-eladsopher  # Reference the StorageClass
   resources:
     requests:
-      storage: 1Gi
+      storage: 5Gi

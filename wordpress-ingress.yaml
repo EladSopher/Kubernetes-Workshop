@@ -1,15 +1,14 @@
-# wordpress-ingress.yaml (updated)
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: wordpress-ingress
   namespace: eladsopher
-  annotations:
-    kubernetes.io/ingress.class: "nginx-student"  # Match the ingress-class from controller
-    nginx.ingress.kubernetes.io/rewrite-target: /
+  # annotations:
+    # nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: eladsopher
   rules:
-  - host: "wordpress.local"  # Replace with your domain
+  - host: afd291ea56b0e40d9aba85bc4ac72707-1219273054.us-east-1.elb.amazonaws.com
     http:
       paths:
       - path: /
