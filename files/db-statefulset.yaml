@@ -35,13 +35,7 @@ spec:
         volumeMounts:
         - name: db-data
           mountPath: /var/lib/mysql
-  volumeClaimTemplates:
-  - metadata:
-      name: db-data
-    spec:
-      accessModes:
-        - ReadWriteOnce
-      storageClassName: ebs-sc-eladsopher
-      resources:
-        requests:
-          storage: 1Gi
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: db-pvc
