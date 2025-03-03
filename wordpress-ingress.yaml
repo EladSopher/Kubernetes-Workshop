@@ -1,0 +1,21 @@
+# wordpress-ingress.yaml (updated)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wordpress-ingress
+  namespace: eladsopher
+  annotations:
+    kubernetes.io/ingress.class: "nginx-student"  # Match the ingress-class from controller
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: "wordpress.local"  # Replace with your domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: wordpress-service
+            port:
+              number: 80
