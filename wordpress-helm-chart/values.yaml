@@ -1,0 +1,67 @@
+# wordpress-helm-chart/values.yaml
+namespace: eladsopher
+
+imagePullSecrets:
+  enabled: false  # Set true for Minikube with ECR secret
+  name: ecr-secret
+
+storageClass:
+  name: ebs-sc
+  provisioner: ebs.csi.aws.com
+  volumeBindingMode: WaitForFirstConsumer
+  allowVolumeExpansion: true
+  parameters:
+    type: gp3
+    fsType: ext4
+    encrypted: "true"
+
+db:
+  name: db
+  serviceName: db-service
+  replicas: 1
+  appLabel: db
+  containerName: mariadb
+  image:
+    repository: 992382545251.dkr.ecr.us-east-1.amazonaws.com/eladsopher/final-workshop
+    tag: mariadb-10.6.4-focal
+  servicePort: 3306
+  containerPort: 3306
+  args: --default-authentication-plugin=mysql_native_password
+  env:
+    rootPassword: somewordpress
+    database: wordpress
+    user: wordpress
+    password: wordpress
+  volumeName: db-data
+  mountPath: /var/lib/mysql
+  storage:
+    accessMode: ReadWriteOnce
+    className: ebs-sc
+    size: 1Gi
+
+wordpress:
+  name: wordpress
+  replicas: 2
+  appLabel: wordpress
+  containerName: wordpress
+  image:
+    repository: 992382545251.dkr.ecr.us-east-1.amazonaws.com/eladsopher/final-workshop
+    tag: wordpress-latest
+  serviceName: wordpress-service
+  servicePort: 80
+  containerPort: 80
+  env:
+    dbHost: db-service
+    dbUser: wordpress
+    dbPassword: wordpress
+    dbName: wordpress
+  volumeName: wp-data
+  mountPath: /var/www/html
+  pvcName: wp-pvc
+  storage:
+    accessMode: ReadWriteOnce
+    className: ebs-sc-eladsopher  # Match existing
+    size: 5Gi  # Match existing
+  ingressName: wordpress-ingress
+  ingressClassName: eladsopher
+  host: wordpress.local

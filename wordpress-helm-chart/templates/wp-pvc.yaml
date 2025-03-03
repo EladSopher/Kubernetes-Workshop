@@ -1,0 +1,13 @@
+# wordpress-helm-chart/templates/wp-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.wordpress.pvcName | quote }}
+  namespace: {{ .Values.namespace | quote }}
+spec:
+  accessModes:
+  - {{ .Values.wordpress.storage.accessMode | quote }}
+  storageClassName: {{ .Values.wordpress.storage.className | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.wordpress.storage.size | quote }}

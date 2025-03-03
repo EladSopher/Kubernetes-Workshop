@@ -18,3 +18,10 @@ spec:
             name: wordpress-service
             port:
               number: 80
+      - path: /grafana
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: elad-sopher-monitor-grafana
+            port:
+              number: 80

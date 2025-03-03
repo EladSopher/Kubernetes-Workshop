@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.wordpress.name | quote }}
+  namespace: {{ .Values.namespace | quote }}
+  labels:
+    app: {{ .Values.wordpress.appLabel | quote }}
+spec:
+  replicas: {{ .Values.wordpress.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.wordpress.appLabel | quote }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.wordpress.appLabel | quote }}
+    spec:
+      {{- if .Values.imagePullSecrets.enabled }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets.name | quote }}
+      {{- end }}
+      containers:
+      - name: {{ .Values.wordpress.containerName | quote }}
+        image: {{ printf "%s:%s" .Values.wordpress.image.repository .Values.wordpress.image.tag | quote }}
+        ports:
+        - containerPort: {{ .Values.wordpress.containerPort }}
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: {{ .Values.wordpress.env.dbHost | quote }}
+        - name: WORDPRESS_DB_USER
+          value: {{ .Values.wordpress.env.dbUser | quote }}
+        - name: WORDPRESS_DB_PASSWORD
+          value: {{ .Values.wordpress.env.dbPassword | quote }}
+        - name: WORDPRESS_DB_NAME
+          value: {{ .Values.wordpress.env.dbName | quote }}
+        volumeMounts:
+        - name: {{ .Values.wordpress.volumeName | quote }}
+          mountPath: {{ .Values.wordpress.mountPath | quote }}
+      volumes:
+      - name: {{ .Values.wordpress.volumeName | quote }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.wordpress.pvcName | quote }}

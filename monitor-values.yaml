@@ -1,0 +1,39 @@
+# monitor-values.yaml
+prometheus-node-exporter:
+  service:
+    port: 9155
+    targetPort: 9155
+    type: ClusterIP  # Avoid NodePort
+  containerPort: 9155
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "64Mi"
+    limits:
+      cpu: "100m"
+      memory: "128Mi"
+
+prometheus:
+  prometheusSpec:
+    service:
+      port: 9095  # Shifted from 9090
+      type: ClusterIP
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "200m"
+        memory: "512Mi"
+
+grafana:
+  service:
+    type: ClusterIP
+    port: 3055  # Shifted from 3000
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "100m"
+      memory: "256Mi"

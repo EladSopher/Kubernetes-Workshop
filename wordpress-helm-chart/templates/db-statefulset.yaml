@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.db.name | quote }}
+  namespace: {{ .Values.namespace | quote }}
+spec:
+  serviceName: {{ .Values.db.serviceName | quote }}
+  replicas: {{ .Values.db.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.db.appLabel | quote }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.db.appLabel | quote }}
+    spec:
+      {{- if .Values.imagePullSecrets.enabled }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets.name | quote }}
+      {{- end }}
+      containers:
+      - name: {{ .Values.db.containerName | quote }}
+        image: {{ printf "%s:%s" .Values.db.image.repository .Values.db.image.tag | quote }}
+        ports:
+        - containerPort: {{ .Values.db.containerPort }}
+        args:
+        - {{ .Values.db.args | quote }}
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: {{ .Values.db.env.rootPassword | quote }}
+        - name: MYSQL_DATABASE
+          value: {{ .Values.db.env.database | quote }}
+        - name: MYSQL_USER
+          value: {{ .Values.db.env.user | quote }}
+        - name: MYSQL_PASSWORD
+          value: {{ .Values.db.env.password | quote }}
+        volumeMounts:
+        - name: {{ .Values.db.volumeName | quote }}
+          mountPath: {{ .Values.db.mountPath | quote }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.db.volumeName | quote }}
+    spec:
+      accessModes:
+      - {{ .Values.db.storage.accessMode | quote }}
+      storageClassName: {{ .Values.db.storage.className | quote }}
+      resources:
+        requests:
+          storage: {{ .Values.db.storage.size | quote }}
