@@ -14,7 +14,6 @@ This repository contains a Helm chart (`wordpress-helm-chart`) for deploying a W
 ## Repository Structure
 ```
 Kubernetes-Workshop/
-├── ingress-values.yaml       # Configuration for the NGINX Ingress Controller
 ├── files/     # Helm chart for WordPress and MariaDB
 │   │   ├── db-service.yaml       # Headless service for MariaDB
 │   │   ├── db-statefulset.yaml   # MariaDB StatefulSet
@@ -36,6 +35,7 @@ Kubernetes-Workshop/
 │   │   ├── wordpress-service.yaml    # WordPress Service
 │   │   ├── wp-pvc.yaml           # Persistent storage for WordPress
 │   └── .helmignore           # Ignore list for Helm packaging
+├── images/     # Screenshots for confirmation
 └── README.md                 # Project documentation (this file)
 ```
 
