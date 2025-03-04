@@ -57,8 +57,8 @@ Ensure you have the following installed before proceeding:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/eladsopher/wordpress-k8s-helm.git
-cd wordpress-k8s-helm
+git clone https://github.com/EladSopher/Kubernetes-Workshop.git
+cd Kubernetes-Workshop
 ```
 
 ### 2. Deploy NGINX Ingress Controller
